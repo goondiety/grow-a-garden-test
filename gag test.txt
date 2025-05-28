@@ -43,7 +43,7 @@ local DarkerPSolidTheme = {
     DialogInputLine = Color3.fromRGB(80, 80, 80),
 }
 
-
+Fluent.ThemeManager:AddTheme("DarkerP Solid", DarkerPSolidTheme)
 
 -- Main UI
 local Window = Fluent:CreateWindow({
@@ -52,7 +52,7 @@ local Window = Fluent:CreateWindow({
     TabWidth = 160,
     Size = UDim2.fromOffset(420, 300),
     Acrylic = false,
-   Theme = DarkerPSolidTheme,
+   Theme = "DarkerP Solid", -- Use the name here
 
     
     MinimizeKey = minimizeUI
