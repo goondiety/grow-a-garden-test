@@ -8,35 +8,39 @@ local lp = game.Players.LocalPlayer
 
 local minimizeUI = Enum.KeyCode.RightAlt
 
--- 🟢 Create Main UI
+-- Main UI
 local Window = Fluent:CreateWindow({
-    Title = "Moondiety",
-    SubTitle = "Grow a Garden",
+    Title = "Grow a garden",
+    SubTitle = "By Moondiety",
     TabWidth = 160,
     Size = UDim2.fromOffset(480, 360),
     Acrylic = false,
     Theme = "Darker",
     MinimizeKey = minimizeUI
 })
+-- Load and set custom theme
+local DarkerPTheme = loadstring(game:HttpGet("https://raw.githubusercontent.com/hungquan99/FluentUI/refs/heads/master/src/Themes/DarkerP.lua"))()
+Fluent:SetTheme(DarkerPTheme)
 
 -- Tabs
 local Tabs = {
     Home = Window:AddTab({ Title = "Home", Icon = "rbxassetid://6031075938" }),
-    Farm = Window:AddTab({ Title = "Auto", Icon = "rbxassetid://6034987494" }),
+    Farm = Window:AddTab({ Title = "Auto", Icon = "rbxassetid://6031265976" }),
     Items = Window:AddTab({ Title = "Misc", Icon = "rbxassetid://6034509993" }),
-    Player = Window:AddTab({ Title = "Ability", Icon = "rbxassetid://6034978749" }),
-    Misc = Window:AddTab({ Title = "Shop", Icon = "rbxassetid://6035047402" }),
-   
-}  
+    Misc = Window:AddTab({ Title = "Shops", Icon = "rbxassetid://6031763426" }),
+    Player = Window:AddTab({ Title = "Ability", Icon = "rbxassetid://6031075938" }),
+}
+
+
 -- Home Tab Content
 Tabs.Home:AddParagraph({
-    Title = "Join the Community",
-    Content = "Join up like a good boy for more scripts"
+    Title = "More Updates on Discord",
+    Content = ""
 })
 
 Tabs.Home:AddButton({
     Title = "Join Discord",
-    Description = "Opens the Discord invite link",
+    Description = "Join up like a good boy for more scripts",
     Callback = function()
         setclipboard("https://discord.gg/wZ4hBXSrxY")
         Fluent:Notify({
@@ -354,7 +358,7 @@ AutoHarvestToggle:OnChanged(function(state)
 end)
 
 local AutoFarmToggle = Tabs.Farm:AddToggle("AutoFarmToggle", {
-    Title = "Auto Farm [buggy]",
+    Title = "Auto Farm [Beta]",
     Default = false
 })
 
