@@ -817,6 +817,18 @@ local InfJumpToggle = Tabs.Player:AddToggle("InfJumpToggle", {
 InfJumpToggle:OnChanged(function(state)
     ToggleInfJump(state)
 end)
+Tabs.Player:AddButton({
+    Title = "Anti Stealer",
+    Description = "No one can steal from your garden",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/m00ndiety/Grow-a-garden/refs/heads/main/Anti%20stealer.txt"))()
+        Fluent:Notify({
+            Title = "Anti Stealer Activated",
+            Content = "Your garden is now protected.",
+            Duration = 4
+        })
+    end
+})
 
 
 
