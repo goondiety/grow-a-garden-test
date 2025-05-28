@@ -13,23 +13,30 @@ local Window = Fluent:CreateWindow({
     Title = "Grow a garden",
     SubTitle = "By Moondiety",
     TabWidth = 160,
-    Size = UDim2.fromOffset(430, 300),
+    Size = UDim2.fromOffset(420, 300),
     Acrylic = false,
-    Theme = "Darker",
+    Theme = nil,
     MinimizeKey = minimizeUI
 })
-
+Window:SetWindowPosition(UDim2.new(0.5, -210, 0.4, 0)) -- X centered, Y a bit higher
 
 -- Load and set custom theme
-local DarkerPTheme = loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/Loader/refs/heads/main/theme"))()
-Fluent:SetTheme(DarkerPTheme)
+-- Apply custom solid theme
+local success, SolidTheme = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/Loader/refs/heads/main/theme"))()
+end)
 
+if success and SolidTheme then
+    Fluent:SetTheme(SolidTheme)
+else
+    warn("Failed to load or apply theme.")
+end
 -- Tabs
 local Tabs = {
     Home = Window:AddTab({ Title = "Home", Icon = "rbxassetid://6031075938" }),
-    Farm = Window:AddTab({ Title = "Auto", Icon = "rbxassetid://6031265976" }),
+    Farm = Window:AddTab({ Title = "Auto", Icon = "rbxassetid://6031763426" }),
     Items = Window:AddTab({ Title = "Misc", Icon = "rbxassetid://6034509993" }),
-    Misc = Window:AddTab({ Title = "Shops", Icon = "rbxassetid://6031763426" }),
+    Misc = Window:AddTab({ Title = "Shops", Icon = "rbxassetid://6031265976" }),
     Player = Window:AddTab({ Title = "Ability", Icon = "rbxassetid://6031075938" }),
 }
 
@@ -929,7 +936,7 @@ DragUI.Parent = CoreGui -- Overrides all other UI elements
 local Button = Instance.new("ImageButton")
 Button.Parent = DragUI
 Button.Size = UDim2.new(0, 50, 0, 50) -- Adjust size if needed
-Button.Position = UDim2.new(0, 15, 1, -130) -- Initial position
+-- Button.Position = UDim2.new(0, 15, 1, -130) -- Initial position
 Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Windows 11 Style
 Button.BackgroundTransparency = 0.3 -- Semi-transparent
 Button.BorderSizePixel = 0
@@ -1031,4 +1038,9 @@ Button.InputChanged:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
         OnDrag(input)
     end
+end)
+
+-- 🛠️ Force final position
+task.defer(function()
+    Button.Position = UDim2.new(0, 10, 1, -160)
 end)
