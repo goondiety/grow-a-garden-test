@@ -10,7 +10,7 @@ local minimizeUI = Enum.KeyCode.RightAlt
 
 -- 🟢 Create Main UI
 local Window = Fluent:CreateWindow({
-    Title = "Hutao hub V1.5",
+    Title = "Moondiety",
     SubTitle = "Grow a Garden",
     TabWidth = 160,
     Size = UDim2.fromOffset(480, 360),
@@ -21,12 +21,32 @@ local Window = Fluent:CreateWindow({
 
 -- Tabs
 local Tabs = {
-    Farm = Window:AddTab({ Title = "Farm", Icon = "rbxassetid://121302760641013" }),
-    Items = Window:AddTab({ Title = "Items", Icon = "rbxassetid://121302760641013" }),
-    Player = Window:AddTab({ Title = "Player", Icon = "rbxassetid://121302760641013" }),
-    Misc = Window:AddTab({ Title = "Misc", Icon = "rbxassetid://121302760641013" }),
-    Settings = Window:AddTab({ Title = "Setting", Icon = "rbxassetid://121302760641013" }),
+    Home = Window:AddTab({ Title = "Home", Icon = "rbxassetid://6031075938" }),
+    Farm = Window:AddTab({ Title = "Auto", Icon = "rbxassetid://6034987494" }),
+    Items = Window:AddTab({ Title = "Misc", Icon = "rbxassetid://6034509993" }),
+    Player = Window:AddTab({ Title = "Ability", Icon = "rbxassetid://6034978749" }),
+    Misc = Window:AddTab({ Title = "Shop", Icon = "rbxassetid://6035047402" }),
+   
 }  
+-- Home Tab Content
+Tabs.Home:AddParagraph({
+    Title = "Join the Community",
+    Content = "Join up like a good boy for more scripts"
+})
+
+Tabs.Home:AddButton({
+    Title = "Join Discord",
+    Description = "Opens the Discord invite link",
+    Callback = function()
+        setclipboard("https://discord.gg/wZ4hBXSrxY")
+        Fluent:Notify({
+            Title = "Discord Link Copied!",
+            Content = "Paste it into your browser to join.",
+            Duration = 5
+        })
+    end
+})
+
 
 
 
@@ -76,97 +96,7 @@ end
 -------- Click Button Code --------
 
 -- Tích hợp đầy đủ Auto Farm trong Fluent UI
-local AutoFarmToggle = Tabs.Farm:AddToggle("AutoFarmToggle", {
-    Title = "Auto Farm",
-    Default = false
-})
 
-AutoFarmToggle:OnChanged(function(state)
-    local autoFarmEnabled = state
-    local farmThread
-
-    local function updateFarmData()
-        farms = {}
-        plants = {}
-        for _, farm in pairs(workspace:FindFirstChild("Farm"):GetChildren()) do
-            local data = farm:FindFirstChild("Important") and farm.Important:FindFirstChild("Data")
-            if data and data:FindFirstChild("Owner") and data.Owner.Value == lp.Name then
-                table.insert(farms, farm)
-                local plantsFolder = farm.Important:FindFirstChild("Plants_Physical")
-                if plantsFolder then
-                    for _, plantModel in pairs(plantsFolder:GetChildren()) do
-                        for _, part in pairs(plantModel:GetDescendants()) do
-                            if part:IsA("BasePart") and part:FindFirstChildOfClass("ProximityPrompt") then
-                                table.insert(plants, part)
-                                break
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    local function glitchTeleport(pos)
-        if not lp.Character then return end
-        local root = lp.Character:FindFirstChild("HumanoidRootPart")
-        if not root then return end
-        local tween = TweenService:Create(root, TweenInfo.new(0.15, Enum.EasingStyle.Linear), {
-            CFrame = CFrame.new(pos + Vector3.new(0, 5, 0))
-        })
-        tween:Play()
-    end
-
-    local function isInventoryFull()
-        return #lp.Backpack:GetChildren() >= 200
-    end
-
-    if autoFarmEnabled then
-        farmThread = task.spawn(function()
-            while autoFarmEnabled do
-                while isInventoryFull() do
-                    if not autoFarmEnabled then return end
-                    task.wait(1)
-                end
-
-                if not autoFarmEnabled then return end
-                updateFarmData()
-
-                for _, part in pairs(plants) do
-                    if not autoFarmEnabled then return end
-                    if isInventoryFull() then break end
-                    if part and part.Parent then
-                        local prompt = part:FindFirstChildOfClass("ProximityPrompt")
-                        if prompt then
-                            glitchTeleport(part.Position)
-                            task.wait(0.2)
-
-                            for _, farm in pairs(farms) do
-                                if not autoFarmEnabled or isInventoryFull() then break end
-                                for _, obj in pairs(farm:GetDescendants()) do
-                                    if obj:IsA("ProximityPrompt") then
-                                        local str = tostring(obj.Parent)
-                                        if not (str:find("Grow_Sign") or str:find("Core_Part")) then
-                                            fireproximityprompt(obj, 1)
-                                        end
-                                    end
-                                end
-                            end
-
-                            if not autoFarmEnabled then return end
-                            task.wait(0.2)
-                        end
-                    end
-                end
-
-                if autoFarmEnabled then task.wait(0.1) end
-            end
-        end)
-    elseif farmThread then
-        task.cancel(farmThread)
-        farmThread = nil
-    end
-end)
 
 
 
@@ -178,7 +108,7 @@ local autoBuyEventItems = false
 
 -- Mua hạt giống
 Tabs.Farm:AddToggle("AutoBuySeeds", {
-    Title = "Auto Buy Seed",
+    Title = "Auto Buy",
     Default = false,
     Callback = function(Value)
         autoBuySeeds = Value
@@ -201,7 +131,7 @@ Tabs.Farm:AddToggle("AutoBuySeeds", {
 
 
 local AutoCollectToggle = Tabs.Farm:AddToggle("AutoCollectV2Toggle", {
-    Title = "Auto Collect V2",
+    Title = "Auto Collect",
     Default = false
 })
 
@@ -306,7 +236,7 @@ end
 
 -- Tạo nút Auto Sell
 local AutoSellToggle = Tabs.Farm:AddToggle("AutoSellToggle", {
-    Title = "Auto Sell All",
+    Title = "Auto Sell",
     Default = false
 })
 
@@ -423,7 +353,97 @@ AutoHarvestToggle:OnChanged(function(state)
     ToggleHarvest(state)
 end)
 
+local AutoFarmToggle = Tabs.Farm:AddToggle("AutoFarmToggle", {
+    Title = "Auto Farm [buggy]",
+    Default = false
+})
 
+AutoFarmToggle:OnChanged(function(state)
+    local autoFarmEnabled = state
+    local farmThread
+
+    local function updateFarmData()
+        farms = {}
+        plants = {}
+        for _, farm in pairs(workspace:FindFirstChild("Farm"):GetChildren()) do
+            local data = farm:FindFirstChild("Important") and farm.Important:FindFirstChild("Data")
+            if data and data:FindFirstChild("Owner") and data.Owner.Value == lp.Name then
+                table.insert(farms, farm)
+                local plantsFolder = farm.Important:FindFirstChild("Plants_Physical")
+                if plantsFolder then
+                    for _, plantModel in pairs(plantsFolder:GetChildren()) do
+                        for _, part in pairs(plantModel:GetDescendants()) do
+                            if part:IsA("BasePart") and part:FindFirstChildOfClass("ProximityPrompt") then
+                                table.insert(plants, part)
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    local function glitchTeleport(pos)
+        if not lp.Character then return end
+        local root = lp.Character:FindFirstChild("HumanoidRootPart")
+        if not root then return end
+        local tween = TweenService:Create(root, TweenInfo.new(0.15, Enum.EasingStyle.Linear), {
+            CFrame = CFrame.new(pos + Vector3.new(0, 5, 0))
+        })
+        tween:Play()
+    end
+
+    local function isInventoryFull()
+        return #lp.Backpack:GetChildren() >= 200
+    end
+
+    if autoFarmEnabled then
+        farmThread = task.spawn(function()
+            while autoFarmEnabled do
+                while isInventoryFull() do
+                    if not autoFarmEnabled then return end
+                    task.wait(1)
+                end
+
+                if not autoFarmEnabled then return end
+                updateFarmData()
+
+                for _, part in pairs(plants) do
+                    if not autoFarmEnabled then return end
+                    if isInventoryFull() then break end
+                    if part and part.Parent then
+                        local prompt = part:FindFirstChildOfClass("ProximityPrompt")
+                        if prompt then
+                            glitchTeleport(part.Position)
+                            task.wait(0.2)
+
+                            for _, farm in pairs(farms) do
+                                if not autoFarmEnabled or isInventoryFull() then break end
+                                for _, obj in pairs(farm:GetDescendants()) do
+                                    if obj:IsA("ProximityPrompt") then
+                                        local str = tostring(obj.Parent)
+                                        if not (str:find("Grow_Sign") or str:find("Core_Part")) then
+                                            fireproximityprompt(obj, 1)
+                                        end
+                                    end
+                                end
+                            end
+
+                            if not autoFarmEnabled then return end
+                            task.wait(0.2)
+                        end
+                    end
+                end
+
+                if autoFarmEnabled then task.wait(0.1) end
+            end
+        end)
+    elseif farmThread then
+        task.cancel(farmThread)
+        farmThread = nil
+    end
+end)
 
 
 -- Tabs.Items
@@ -475,7 +495,7 @@ end)
 
 -- Mua công cụ
 Tabs.Items:AddToggle("AutoBuyGears", {
-    Title = "Auto Buy Gear Items",
+    Title = "Auto Buy Gears",
     Default = false,
     Callback = function(Value)
         autoBuyGears = Value
@@ -496,7 +516,7 @@ Tabs.Items:AddToggle("AutoBuyGears", {
 
 -- Mua item từ Event Shop
 Tabs.Items:AddToggle("AutoBuyEventItems", {
-    Title = "Auto Buy Event Shop Items",
+    Title = "Auto Buy Event Shop",
     Default = false,
     Callback = function(Value)
         autoBuyEventItems = Value
@@ -634,24 +654,6 @@ end)
 
 
 
-local OneClickRemoveToggle = Tabs.Player:AddToggle("OneClickRemoveToggle", {
-    Title = "One Click Remove",
-    Default = false
-})
-
-local enabled = false
-
-local function OneClickRemove(state)
-    enabled = state
-    local confirmFrame = Players.LocalPlayer.PlayerGui:FindFirstChild("ShovelPrompt")
-    if confirmFrame and confirmFrame:FindFirstChild("ConfirmFrame") then
-        confirmFrame.ConfirmFrame.Visible = not state
-    end
-end
-
-OneClickRemoveToggle:OnChanged(function(state)
-    OneClickRemove(state)
-end)
 
 
 -- Fly Variables & Setup
@@ -738,7 +740,7 @@ end
 
 -- 🟦 Add to Fluent GUI
 Tabs.Player:AddToggle("FlyToggle", {
-    Title = "Fly [Mobie+PC]",
+    Title = "Fly",
     Default = false,
     Callback = function(state)
         Fly(state)
@@ -866,6 +868,24 @@ QuestToggle:OnChanged(function(state)
 end)
 
 
+local OneClickRemoveToggle = Tabs.Misc:AddToggle("OneClickRemoveToggle", {
+    Title = "Destroy plant",
+    Default = false
+})
+
+local enabled = false
+
+local function OneClickRemove(state)
+    enabled = state
+    local confirmFrame = Players.LocalPlayer.PlayerGui:FindFirstChild("ShovelPrompt")
+    if confirmFrame and confirmFrame:FindFirstChild("ConfirmFrame") then
+        confirmFrame.ConfirmFrame.Visible = not state
+    end
+end
+
+OneClickRemoveToggle:OnChanged(function(state)
+    OneClickRemove(state)
+end)
 
 
 
@@ -903,12 +923,12 @@ DragUI.Parent = CoreGui -- Overrides all other UI elements
 local Button = Instance.new("ImageButton")
 Button.Parent = DragUI
 Button.Size = UDim2.new(0, 50, 0, 50) -- Adjust size if needed
-Button.Position = UDim2.new(0, 10, 1, -85) -- Initial position
+Button.Position = UDim2.new(0, 10, 1, -110) -- Initial position
 Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Windows 11 Style
 Button.BackgroundTransparency = 0.3 -- Semi-transparent
 Button.BorderSizePixel = 0
 Button.ClipsDescendants = true
-Button.Image = "rbxassetid://90508203972003" -- Replace with your custom image ID
+Button.Image = "rbxassetid://133495621202705" -- Replace with your custom image ID
 Button.ScaleType = Enum.ScaleType.Fit
 Button.Active = true -- Allows drag functionality
 Button.ZIndex = 1000 -- Ensure it stays on top
