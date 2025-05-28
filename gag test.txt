@@ -18,7 +18,7 @@ local Window = Fluent:CreateWindow({
     Theme = "Darker",
     MinimizeKey = minimizeUI
 })
-Window:SetWindowPosition(UDim2.new(0.5, -210, 0.4, 0)) -- X centered, Y a bit higher
+
 
 -- Load and set custom theme
 local DarkerPTheme = loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/Loader/refs/heads/main/theme"))()
