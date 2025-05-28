@@ -13,13 +13,13 @@ local Window = Fluent:CreateWindow({
     Title = "Grow a garden",
     SubTitle = "By Moondiety",
     TabWidth = 160,
-    Size = UDim2.fromOffset(480, 360),
+    Size = UDim2.fromOffset(430, 300),
     Acrylic = false,
     Theme = "Darker",
     MinimizeKey = minimizeUI
 })
 -- Load and set custom theme
-local DarkerPTheme = loadstring(game:HttpGet("https://raw.githubusercontent.com/hungquan99/FluentUI/refs/heads/master/src/Themes/DarkerP.lua"))()
+local DarkerPTheme = loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/Loader/refs/heads/main/theme"))()
 Fluent:SetTheme(DarkerPTheme)
 
 -- Tabs
@@ -927,7 +927,7 @@ DragUI.Parent = CoreGui -- Overrides all other UI elements
 local Button = Instance.new("ImageButton")
 Button.Parent = DragUI
 Button.Size = UDim2.new(0, 50, 0, 50) -- Adjust size if needed
-Button.Position = UDim2.new(0, 10, 1, -130) -- Initial position
+Button.Position = UDim2.new(0, 15, 1, -130) -- Initial position
 Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Windows 11 Style
 Button.BackgroundTransparency = 0.3 -- Semi-transparent
 Button.BorderSizePixel = 0
