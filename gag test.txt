@@ -18,7 +18,7 @@ local Window = Fluent:CreateWindow({
     Theme = nil,
     MinimizeKey = minimizeUI
 })
-Window:SetWindowPosition(UDim2.new(0.5, -210, 0.4, 0)) -- X centered, Y a bit higher
+
 
 -- Load and set custom theme
 -- Apply custom solid theme
