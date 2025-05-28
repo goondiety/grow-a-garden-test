@@ -7,8 +7,6 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
 local lp = game.Players.LocalPlayer
 
 local minimizeUI = Enum.KeyCode.RightAlt
-local customTheme = loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/Loader/refs/heads/main/theme"))()
-
 
 -- Main UI
 local Window = Fluent:CreateWindow({
@@ -17,8 +15,7 @@ local Window = Fluent:CreateWindow({
     TabWidth = 160,
     Size = UDim2.fromOffset(420, 300),
     Acrylic = false,
-    Theme = customTheme,
-    
+    Theme = nil,
     MinimizeKey = minimizeUI
 })
 
