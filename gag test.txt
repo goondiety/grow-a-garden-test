@@ -7,7 +7,42 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
 local lp = game.Players.LocalPlayer
 
 local minimizeUI = Enum.KeyCode.RightAlt
-local customTheme = loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/Loader/refs/heads/main/theme"))()
+local DarkerPSolidTheme = {
+    Name = "DarkerP Solid",
+    Accent = Color3.fromRGB(90, 160, 220), -- Slightly more vibrant blue for emphasis
+
+    -- Acrylic Glass Effect turned into solid dark
+    AcrylicMain = Color3.fromRGB(20, 20, 20),
+    AcrylicBorder = Color3.fromRGB(35, 35, 35),
+    AcrylicGradient = ColorSequence.new(Color3.fromRGB(15, 15, 15), Color3.fromRGB(35, 35, 35)),
+    AcrylicNoise = 0.3, -- Minimal noise
+
+    -- Title Bar
+    TitleBarLine = Color3.fromRGB(40, 40, 40),
+
+    -- Tabs & Elements
+    Tab = Color3.fromRGB(50, 50, 50),
+    Element = Color3.fromRGB(25, 25, 25),
+    ElementBorder = Color3.fromRGB(35, 35, 35),
+    InElementBorder = Color3.fromRGB(45, 45, 45),
+    ElementTransparency = 0.1,
+
+    -- Dropdown Menu
+    DropdownFrame = Color3.fromRGB(40, 40, 40),
+    DropdownHolder = Color3.fromRGB(25, 25, 25),
+    DropdownBorder = Color3.fromRGB(45, 45, 45),
+
+    -- Dialogs
+    Dialog = Color3.fromRGB(30, 30, 30),
+    DialogHolder = Color3.fromRGB(20, 20, 20),
+    DialogHolderLine = Color3.fromRGB(30, 30, 30),
+    DialogButton = Color3.fromRGB(50, 50, 50),
+    DialogButtonBorder = Color3.fromRGB(60, 60, 60),
+    DialogBorder = Color3.fromRGB(45, 45, 45),
+    DialogInput = Color3.fromRGB(35, 35, 35),
+    DialogInputLine = Color3.fromRGB(80, 80, 80),
+}
+
 
 
 -- Main UI
@@ -17,7 +52,8 @@ local Window = Fluent:CreateWindow({
     TabWidth = 160,
     Size = UDim2.fromOffset(420, 300),
     Acrylic = false,
-    Theme = customTheme,
+   Theme = DarkerPSolidTheme,
+
     
     MinimizeKey = minimizeUI
 })
