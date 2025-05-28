@@ -13,11 +13,13 @@ local Window = Fluent:CreateWindow({
     Title = "Grow a garden",
     SubTitle = "By Moondiety",
     TabWidth = 160,
-    Size = UDim2.fromOffset(430, 300),
+    Size = UDim2.fromOffset(420, 300),
     Acrylic = false,
     Theme = "Darker",
     MinimizeKey = minimizeUI
 })
+Window:SetWindowPosition(UDim2.new(0.5, -210, 0.4, 0)) -- X centered, Y a bit higher
+
 -- Load and set custom theme
 local DarkerPTheme = loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/Loader/refs/heads/main/theme"))()
 Fluent:SetTheme(DarkerPTheme)
