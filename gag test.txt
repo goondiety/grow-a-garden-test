@@ -494,8 +494,8 @@ toggleAutoClaim(true)
 
 -- ✅ Nút bật tắt trong tab Ite
 local AutoClaimToggle = Tabs.Items:AddToggle("AutoClaimPremiumSeedsToggle", {
-    Title = "Auto Claim Premium Seeds",
-    Default = true
+    Title = "Auto Claim Best Seeds",
+    Default = false
 })
 
 AutoClaimToggle:OnChanged(function(state)
