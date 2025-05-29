@@ -21,9 +21,9 @@ local Window = Fluent:CreateWindow({
 -- set custom theme
 -- solid theme almost 
 -- Try again with theme manager i will remove current one
--- Updated with loadstring with pcall
+-- Update with loadstring pcall if needed 
 local success, SolidTheme = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/Loader/refs/heads/main/theme"))()
+    return loadstring(game:HttpGet(""))()
 end)
 
 if success and SolidTheme then
