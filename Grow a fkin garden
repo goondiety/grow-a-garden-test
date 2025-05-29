@@ -1,27 +1,25 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/hungquan99/FluentUI/master/Addons/SaveManager.lua"))()
-
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/hungquan99/FluentUI/master/Addons/InterfaceManager.lua"))()
 
 local lp = game.Players.LocalPlayer
 
 local minimizeUI = Enum.KeyCode.RightAlt
 
--- Main UI
+-- Main UI 
+
 local Window = Fluent:CreateWindow({
     Title = "Grow a garden",
     SubTitle = "By Moondiety",
     TabWidth = 160,
     Size = UDim2.fromOffset(420, 300),
     Acrylic = false,
-    Theme = nil,
+    Theme = nil, -- problematic shi
     MinimizeKey = minimizeUI
 })
 
 
--- Load and set custom theme
--- Apply custom solid theme
+-- set custom theme
+-- solid theme almost 
 local success, SolidTheme = pcall(function()
     return loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/Loader/refs/heads/main/theme"))()
 end)
@@ -41,7 +39,7 @@ local Tabs = {
 }
 
 
--- Home Tab Content
+-- Home content 
 Tabs.Home:AddParagraph({
     Title = "More Updates on Discord",
     Content = ""
@@ -62,10 +60,6 @@ Tabs.Home:AddButton({
 
 
 
-
-
---------------- All code ----------------
-
 -- Services
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -77,7 +71,7 @@ local GuiService = game:GetService("GuiService")
 local VirtualInputManager = game:GetService("VirtualInputManager")
 
 
--- Utility Functions
+-- Utility func
 local function parseMoney(moneyStr)
     if not moneyStr then return 0 end
     moneyStr = tostring(moneyStr):gsub("Â¢", ""):gsub(",", ""):gsub(" ", ""):gsub("%$", "")
@@ -106,9 +100,7 @@ end
 
 
 
--------- Click Button Code --------
-
--- Tích hợp đầy đủ Auto Farm trong Fluent UI
+-- fluent UI
 
 
 
@@ -119,7 +111,7 @@ local autoBuySeeds = false
 local autoBuyGears = false
 local autoBuyEventItems = false
 
--- Mua hạt giống
+
 Tabs.Farm:AddToggle("AutoBuySeeds", {
     Title = "Auto Buy",
     Default = false,
@@ -247,7 +239,7 @@ local function sellItems()
     return true
 end
 
--- Tạo nút Auto Sell
+-- Will change Auto Sell later 
 local AutoSellToggle = Tabs.Farm:AddToggle("AutoSellToggle", {
     Title = "Auto Sell",
     Default = false
@@ -260,7 +252,7 @@ AutoSellToggle:OnChanged(function(state)
         autoSellThread = task.spawn(function()
             while autoSellEnabled do
                 sellItems()
-                task.wait(1) -- Đợi 1 giây trước lần bán tiếp theo
+                task.wait(1) -- set delay here to not to spam ts
             end
         end)
     else
@@ -356,7 +348,7 @@ local function ToggleHarvest(state)
     end
 end
 
--- Tạo nút Fluent UI Auto Harvest
+
 local AutoHarvestToggle = Tabs.Farm:AddToggle("AutoHarvestToggle", {
     Title = "Auto Harvest",
     Default = false
@@ -459,7 +451,7 @@ AutoFarmToggle:OnChanged(function(state)
 end)
 
 
--- Tabs.Items
+-- Tabs.Auto
 
 
 
@@ -467,8 +459,8 @@ end)
 
 
 
--- Auto Claim Premium Seeds Functions
-local autoClaimToggle = true -- mặc định bật
+-- Auto Best Premium Seed
+local autoClaimToggle = false -- ts lagging hard keep off by default 
 local claimConnection = nil
 
 local function claimPremiumSeed()
@@ -489,10 +481,10 @@ local function toggleAutoClaim(newState)
     end
 end
 
--- Gọi ngay khi GUI load
+-- GUI load
 toggleAutoClaim(true)
 
--- ✅ Nút bật tắt trong tab Ite
+-- Have to rename functions
 local AutoClaimToggle = Tabs.Items:AddToggle("AutoClaimPremiumSeedsToggle", {
     Title = "Auto Claim Best Seeds",
     Default = false
@@ -506,7 +498,7 @@ end)
 
 
 
--- Mua công cụ
+
 Tabs.Items:AddToggle("AutoBuyGears", {
     Title = "Auto Buy Gears",
     Default = false,
@@ -527,7 +519,7 @@ Tabs.Items:AddToggle("AutoBuyGears", {
     end
 })
 
--- Mua item từ Event Shop
+-- Event Shop
 Tabs.Items:AddToggle("AutoBuyEventItems", {
     Title = "Auto Buy Event Shop",
     Default = false,
@@ -563,7 +555,7 @@ local AutoBuyEggToggle = Tabs.Items:AddToggle("AutoBuyEggToggle", {
 local Autoegg_autoBuyEnabled = false
 local autoBuyThread = nil
 
--- Giữ nguyên các biến và hàm trong code bạn gửi
+-- Lags
 local Autoegg_npc = workspace:WaitForChild("NPCS"):WaitForChild("Pet Stand")
 local Autoegg_timer = Autoegg_npc.Timer.SurfaceGui:WaitForChild("ResetTimeLabel")
 local Autoegg_eggLocations = Autoegg_npc:WaitForChild("EggLocations")
@@ -663,7 +655,7 @@ end)
 
 
 
--- Tabs.Player
+-- Tabs.Ability Will change function name
 
 
 
@@ -751,7 +743,7 @@ local function Fly(state)
     end
 end
 
--- 🟦 Add to Fluent GUI
+-- Add to GUI
 Tabs.Player:AddToggle("FlyToggle", {
     Title = "Fly",
     Default = false,
@@ -762,8 +754,8 @@ Tabs.Player:AddToggle("FlyToggle", {
 
 
 
--- Giả sử bạn đã có biến Tabs.Ite (Tab hoặc Item trong Fluent UI framework của bạn)
--- Mình sẽ thêm 2 toggle cho NoClip và Infinite Jump
+
+-- I'll add two toggles for noclip & Inf jump
 
 local noclipEnabled = false
 local noclipConn = nil
@@ -817,6 +809,8 @@ local InfJumpToggle = Tabs.Player:AddToggle("InfJumpToggle", {
 InfJumpToggle:OnChanged(function(state)
     ToggleInfJump(state)
 end)
+
+-- Add Anti stealer through loadstring to not to double call functions
 Tabs.Player:AddButton({
     Title = "Anti Stealer",
     Description = "No one can steal from your garden",
