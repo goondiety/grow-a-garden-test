@@ -1,4 +1,4 @@
-local Env = loadstring(game:HttpGet("https://raw.githubusercontent.com/HeadHarse/Uilib/refs/heads/main/Utilities/Source", true))()
+local Env = loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/grow-a-garden-test/refs/heads/main/Source.txt", true))()
 
 local Banner = {
 	['Genral'] = 101849161408766,
