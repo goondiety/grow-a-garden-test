@@ -1,6 +1,4 @@
 
--- Grow a Garden Script
--- LAJ HUB v2
 
 if not game:IsLoaded() then
     print("Waiting for game to load...")
@@ -326,7 +324,7 @@ end
 local ui = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
 local win = ui:CreateWindow({
-    Title = "LAJ HUB v2 - Grow a Garden",
+    Title = "WindGUI test - Grow a Garden",
     Icon = "leaf",
     Folder = nil,
     Size = UDim2.fromOffset(580, 400),
