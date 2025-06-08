@@ -1,0 +1,173 @@
+-- COPY DISCORD LINK
+setclipboard("https://discord.gg/moondiety")
+
+-- LOADING UI (4s)
+task.spawn(function()
+    local Loading = Instance.new("ScreenGui", game:GetService("CoreGui"))
+    Loading.IgnoreGuiInset = true
+
+    local Background = Instance.new("Frame")
+    Background.Size = UDim2.new(1, 0, 1, 0)
+    Background.BackgroundColor3 = Color3.new(0, 0, 0)
+    Background.Parent = Loading
+
+    local UIGradient = Instance.new("UIGradient")
+    UIGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.new(0, 0, 0)),
+        ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1))
+    }
+    UIGradient.Parent = Background
+
+    local Pattern = Instance.new("ImageLabel")
+    Pattern.BackgroundTransparency = 1
+    Pattern.Size = UDim2.new(1, 0, 1, 0)
+    Pattern.Image = "rbxassetid://2151741365"
+    Pattern.ImageTransparency = 0.5
+    Pattern.ScaleType = Enum.ScaleType.Tile
+    Pattern.TileSize = UDim2.new(0, 250, 0, 250)
+    Pattern.Parent = Background
+
+    local Title = Instance.new("TextLabel")
+    Title.AnchorPoint = Vector2.new(0.5, 0.5)
+    Title.Position = UDim2.new(0.5, 0, 0.3, 0)
+    Title.Size = UDim2.new(0.8, 0, 0.2, 0)
+    Title.BackgroundTransparency = 1
+    Title.Font = Enum.Font.GothamBlack
+    Title.Text = "🌱 Grow a Garden Egg ESP 🌱"
+    Title.TextColor3 = Color3.new(1, 1, 1)
+    Title.TextScaled = true
+    Title.Parent = Background
+
+    local PercentText = Instance.new("TextLabel")
+    PercentText.AnchorPoint = Vector2.new(0.5, 0.5)
+    PercentText.Position = UDim2.new(0.5, 0, 0.5, 0)
+    PercentText.Size = UDim2.new(0.8, 0, 0.05, 0)
+    PercentText.BackgroundTransparency = 1
+    PercentText.Font = Enum.Font.GothamSemibold
+    PercentText.Text = "Made by Moondiety"
+    PercentText.TextColor3 = Color3.new(1, 1, 1)
+    PercentText.TextScaled = true
+    PercentText.Parent = Background
+
+    local Bar = Instance.new("Frame")
+    Bar.AnchorPoint = Vector2.new(0.5, 0.5)
+    Bar.Position = UDim2.new(0.5, 0, 0.6, 0)
+    Bar.Size = UDim2.new(0.5, 0, 0.06, 0)
+    Bar.BackgroundColor3 = Color3.new(0, 0, 0)
+    Bar.BackgroundTransparency = 0.5
+    Bar.Parent = Background
+
+    local UICorner = Instance.new("UICorner", Bar)
+    UICorner.CornerRadius = UDim.new(0, 10)
+
+    local LoadBar = Instance.new("Frame")
+    LoadBar.Size = UDim2.new(0, 0, 1, 0)
+    LoadBar.BackgroundColor3 = Color3.new(1, 1, 1)
+    LoadBar.Parent = Bar
+    Instance.new("UICorner", LoadBar).CornerRadius = UDim.new(0, 10)
+
+    local PercentNum = Instance.new("TextLabel")
+    PercentNum.AnchorPoint = Vector2.new(0.5, 0.5)
+    PercentNum.Position = UDim2.new(0.5, 0, 0.72, 0)
+    PercentNum.Size = UDim2.new(1, 0, 0.05, 0)
+    PercentNum.BackgroundTransparency = 1
+    PercentNum.Font = Enum.Font.GothamSemibold
+    PercentNum.Text = "0%"
+    PercentNum.TextColor3 = Color3.new(1, 1, 1)
+    PercentNum.TextScaled = true
+    PercentNum.Parent = Background
+
+    -- DISCORD LINK TEXT
+    local LinkText = Instance.new("TextLabel")
+    LinkText.AnchorPoint = Vector2.new(0.5, 0.5)
+    LinkText.Position = UDim2.new(0.5, 0, 0.82, 0)
+    LinkText.Size = UDim2.new(0.4, 0, 0.02, 0)
+    LinkText.BackgroundTransparency = 1
+    LinkText.Font = Enum.Font.GothamSemibold
+    LinkText.Text = "discord.gg/moondiety"
+    LinkText.TextColor3 = Color3.fromRGB(150, 150, 150)
+    LinkText.TextScaled = true
+    LinkText.Parent = Background
+
+    local TweenService = game:GetService("TweenService")
+    local tween = TweenService:Create(LoadBar, TweenInfo.new(4, Enum.EasingStyle.Linear), {Size = UDim2.new(1, 0, 1, 0)})
+    tween:Play()
+
+    task.spawn(function()
+        for i = 0, 100 do
+            PercentNum.Text = i .. "%"
+            task.wait(4 / 100)
+        end
+    end)
+
+    task.wait(4)
+    Loading:Destroy()
+end)
+
+-- EXECUTE GROW A GARDEN ESP SCRIPT
+task.spawn(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/goondiety/grow-a-garden-test/refs/heads/main/egg%20esp"))()
+
+    -- Show CoreGui Notification
+    pcall(function()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Made by Moondiety",
+            Text = "Grow a Garden ESP loaded",
+            Duration = 5
+        })
+    end)
+end)
+
+-- GUI BUTTON TO COPY DISCORD LINK
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "DiscordCopyGUI"
+gui.ResetOnSpawn = false
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 60, 0, 60)
+frame.Position = UDim2.new(1, -80, 0.5, -30)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+frame.Parent = gui
+
+local frameCorner = Instance.new("UICorner")
+frameCorner.CornerRadius = UDim.new(0, 12)
+frameCorner.Parent = frame
+
+local imageBox = Instance.new("ImageButton")
+imageBox.Size = UDim2.new(0, 50, 0, 50)
+imageBox.Position = UDim2.new(0, 5, 0, 5)
+imageBox.BackgroundTransparency = 1
+imageBox.Image = "rbxassetid://133495621202705"
+imageBox.Parent = frame
+
+local imageCorner = Instance.new("UICorner")
+imageCorner.CornerRadius = UDim.new(0, 12)
+imageCorner.Parent = imageBox
+
+-- Flicker effect
+task.spawn(function()
+    while true do
+        imageBox.ImageTransparency = 0.2
+        task.wait(0.3)
+        imageBox.ImageTransparency = 0.6
+        task.wait(0.3)
+    end
+end)
+
+-- On Click: Copy Discord link
+imageBox.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/moondiety")
+    pcall(function()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Copied!",
+            Text = "Discord link copied to clipboard.",
+            Duration = 4
+        })
+    end)
+end)
