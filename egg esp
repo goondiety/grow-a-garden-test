@@ -1,0 +1,125 @@
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local collectionService = game:GetService("CollectionService")
+local players = game:GetService("Players")
+local runService = game:GetService("RunService")
+
+local localPlayer = players.LocalPlayer
+local currentCamera = workspace.CurrentCamera
+
+local hatchFunction = getupvalue(getupvalue(getconnections(replicatedStorage.GameEvents.PetEggService.OnClientEvent)[1].Function, 1), 2)
+local eggModels = getupvalue(hatchFunction, 1)
+local eggPets = getupvalue(hatchFunction, 2)
+
+local espCache = {}
+local activeEggs = {}
+
+local function getObjectFromId(objectId)
+    for eggModel in eggModels do
+        if eggModel:GetAttribute("OBJECT_UUID") ~= objectId then continue end
+        return eggModel
+    end
+end
+
+-- Create stacked Drawing.Text objects to simulate bold
+local function CreateBoldText(text)
+    local labels = {}
+    local offsets = {
+        Vector2.new(0, 0),
+        Vector2.new(1, 0),
+        Vector2.new(-1, 0),
+        Vector2.new(0, 1),
+        Vector2.new(0, -1),
+    }
+
+    for _, offset in ipairs(offsets) do
+        local label = Drawing.new("Text")
+        label.Text = text
+        label.Size = 20
+        label.Color = Color3.fromRGB(255, 215, 0) -- Gold
+        label.Center = true
+        label.Visible = false
+        label.Outline = false -- Outline is faked by stacking
+        table.insert(labels, {label = label, offset = offset})
+    end
+
+    return labels
+end
+
+local function UpdateEsp(objectId, petName)
+    local object = getObjectFromId(objectId)
+    if not object or not espCache[objectId] then return end
+
+    local eggName = object:GetAttribute("EggName")
+    local text = `{eggName} | {petName}`
+    for _, t in ipairs(espCache[objectId]) do
+        t.label.Text = text
+    end
+end
+
+local function AddEsp(object)
+    if object:GetAttribute("OWNER") ~= localPlayer.Name then return end
+
+    local eggName = object:GetAttribute("EggName")
+    local petName = eggPets[object:GetAttribute("OBJECT_UUID")]
+    local objectId = object:GetAttribute("OBJECT_UUID")
+    if not objectId then return end
+
+    local text = `{eggName} | {petName or "?"}`
+    local stackedText = CreateBoldText(text)
+    espCache[objectId] = stackedText
+    activeEggs[objectId] = object
+end
+
+local function RemoveEsp(object)
+    if object:GetAttribute("OWNER") ~= localPlayer.Name then return end
+
+    local objectId = object:GetAttribute("OBJECT_UUID")
+    if espCache[objectId] then
+        for _, t in ipairs(espCache[objectId]) do
+            t.label:Remove()
+        end
+        espCache[objectId] = nil
+    end
+    activeEggs[objectId] = nil
+end
+
+local function UpdateAllEsp()
+    for objectId, object in activeEggs do
+        if not object or not object:IsDescendantOf(workspace) then
+            activeEggs[objectId] = nil
+            if espCache[objectId] then
+                for _, t in ipairs(espCache[objectId]) do
+                    t.label.Visible = false
+                end
+            end
+            continue
+        end
+
+        local stacked = espCache[objectId]
+        if stacked then
+            local pos, onScreen = currentCamera:WorldToViewportPoint(object:GetPivot().Position)
+            for _, t in ipairs(stacked) do
+                t.label.Position = Vector2.new(pos.X, pos.Y) + t.offset
+                t.label.Visible = onScreen
+            end
+        end
+    end
+end
+
+-- Initial ESP setup
+for _, object in collectionService:GetTagged("PetEggServer") do
+    task.spawn(AddEsp, object)
+end
+
+-- New objects and removed objects
+collectionService:GetInstanceAddedSignal("PetEggServer"):Connect(AddEsp)
+collectionService:GetInstanceRemovedSignal("PetEggServer"):Connect(RemoveEsp)
+
+-- Hook to update pet name after hatching
+local old; old = hookfunction(getconnections(replicatedStorage.GameEvents.EggReadyToHatch_RE.OnClientEvent)[1].Function, newcclosure(function(objectId, petName)
+    UpdateEsp(objectId, petName)
+    return old(objectId, petName)
+end))
+
+-- Update positions every frame
+runService.PreRender:Connect(UpdateAllEsp)
