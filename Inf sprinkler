@@ -1,0 +1,55 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+
+-- Enable or disable sprinkler here
+local infiniteSprinklerEnabled = true
+
+-- List of crop names (lowercase)
+local cropSet = {
+    carrot = true, strawberry = true, tomato = true, corn = true, watermelon = true,
+    pumpkin = true, apple = true, bamboo = true, grape = true, mushroom = true,
+    pepper = true, cacao = true, coconut = true, cactus = true, dragonfruit = true,
+    honeysuckle = true, mango = true, nectarine = true, peach = true, pineapple = true,
+    -- Add more crop names if needed
+}
+
+-- Helper: get main part of a crop model
+local function getPrimaryPart(model)
+    if model.PrimaryPart then return model.PrimaryPart end
+    for _, part in ipairs(model:GetChildren()) do
+        if part:IsA("BasePart") then
+            model.PrimaryPart = part
+            return part
+        end
+    end
+end
+
+-- Sprinkler logic
+local function sprinklerAction()
+    local char = LocalPlayer.Character
+    local root = char and char:FindFirstChild("HumanoidRootPart")
+    if not root then return end
+
+    for _, model in ipairs(workspace:GetDescendants()) do
+        if model:IsA("Model") and cropSet[model.Name:lower()] then
+            local pp = getPrimaryPart(model)
+            if pp and (pp.Position - root.Position).Magnitude <= 15 then
+                local event = ReplicatedStorage:FindFirstChild("WaterPlant")
+                if event and event:IsA("RemoteEvent") then
+                    event:FireServer(model)
+                end
+            end
+        end
+    end
+end
+
+-- Auto-run loop
+task.spawn(function()
+    while true do
+        if infiniteSprinklerEnabled then
+            sprinklerAction()
+        end
+        task.wait(3)
+    end
+end)
